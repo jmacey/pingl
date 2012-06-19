@@ -1,0 +1,23 @@
+This is the raspberry pi port of the NCCA Graphics Library NGL, it is optimised for use with the pi and OpenGLES, for more information about the library see http://nccastaff.bournemouth.ac.uk/jmacey/GraphicsLib/piNGL/index.html
+
+You need to install the following dependancies
+
+boost++ ImageMagick and SDL this can be done on the pi using apt-get (for the wheezy image this is as follows)
+
+apt-get install libmagick++-dev boost-dev libsdl1.2-dev
+
+To build on the pi just type make in the piNGL directory (and go make some coffee as it takes some time)
+
+There is a sample cross compilation Makefile but you will need to setup the paths to suit your own installs (I copy the /opt/vc directory to my mac and use it) this will also build in the large model support which can't be compiled on the pi due to lack of memory.
+
+Once the library is built you need to add the following line to your .bashrc file
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/piNGL/lib
+
+and type source ~/.bashrc to tell the system where to find NGL.
+
+The demos should now work (demos will be in a different download shortly)
+
+If you have any issues please email me Jon Macey jmacey@bournemouth.ac.uk
+
+

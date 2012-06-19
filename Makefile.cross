@@ -1,0 +1,14 @@
+CC=arm-none-linux-gnueabi-g++
+CFLAGS=-c -Wall -O3 -I/Volumes/home/jmacey/boost_1_49_0/ -I/opt/vc/include/interface/vcos/pthreads  -I/Volumes/home/jmacey/teaching/pi/opt/vc/include -I/Volumes/home/jmacey/teaching/pi/opt/vc/include/ImageMagick -Iinclude/ngl -Isrc/ngl -Isrc/shaders -DNGL_DEBUG -DLARGEMODELS
+LDFLAGS=-shared -L/Volumes/home/jmacey/teaching/pi/opt/vc/lib -lMagickCore -lMagick++
+SOURCES=$(shell find ./ -name *.cpp)
+OBJECTS=$(SOURCES:%.cpp=%.o)
+EXECUTABLE=lib/libNGL.so
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
