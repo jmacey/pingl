@@ -12,7 +12,7 @@ There is a sample cross compilation Makefile but you will need to setup the path
 
 Once the library is built you need to add the following line to your .bashrc file
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/piNGL/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/pingl/lib
 
 and type source ~/.bashrc to tell the system where to find NGL.
 
