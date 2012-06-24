@@ -44,12 +44,6 @@ void printInfoLog(
 
     std::cerr<<infoLog<<std::endl;
 		delete [] infoLog;
-    glGetShaderiv(_obj, GL_COMPILE_STATUS,&infologLength);
-    if( infologLength == GL_FALSE)
-    {
-      std::cerr<<"Shader compile failed or had warnings \n";
-     // exit(EXIT_FAILURE);
-    }
   }
 
 }
@@ -100,8 +94,16 @@ void Shader::compile()
   glCompileShader(m_shaderHandle);
 	if(m_debugState==true)
 	{
-    std::cerr <<"Compiling Shader "<<m_name<<"\n";
-		printInfoLog(m_shaderHandle);
+		GLint infologLength = 0;
+  	std::cerr <<"Compiling Shader "<<m_name<<"\n";
+
+  	glGetShaderiv(m_shaderHandle, GL_COMPILE_STATUS,&infologLength);
+    if( infologLength == GL_FALSE)
+    {
+      std::cerr<<"Shader compile failed or had warnings \n";
+	    printInfoLog(m_shaderHandle);
+      exit(EXIT_FAILURE);
+    }
   }
   m_compiled=true;
 }

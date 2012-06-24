@@ -4,7 +4,7 @@ You need to install the following dependancies
 
 boost++ ImageMagick and SDL this can be done on the pi using apt-get (for the wheezy image this is as follows)
 
-apt-get install libmagick++-dev boost-dev libsdl1.2-dev
+apt-get install libmagick++-dev libboost-dev libsdl1.2-dev
 
 To build on the pi just type make in the piNGL directory (and go make some coffee as it takes some time)
 

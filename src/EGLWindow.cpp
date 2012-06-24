@@ -60,8 +60,6 @@ EGLWindow::EGLWindow(EGLconfig *_config)
  {
 		m_config=_config;
  }
- // our client class must now call make surface as we now have a constructed object
- m_mouse= new Mouse(m_width,m_height);
 
 }
 
@@ -204,7 +202,6 @@ EGLWindow::~EGLWindow()
 	std::cout<<"dtor called\n";
 	glClear( GL_COLOR_BUFFER_BIT );
 	destroySurface();
-	delete m_mouse;
 }
 
 void EGLWindow::swapBuffers() const
@@ -213,10 +210,6 @@ void EGLWindow::swapBuffers() const
 }
 
 
-void EGLWindow::getMouse(int &_x, int &_y)
-{
-	m_mouse->getXY(_x,_y);
-}
 
 void EGLWindow::resizeScreen(uint32_t _w, uint32_t _h)
 {

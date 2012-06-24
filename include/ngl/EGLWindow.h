@@ -21,7 +21,6 @@
 #include <EGL/eglext.h>
 #include <GLES2/gl2.h>
 #include <bcm_host.h>
-#include "Mouse.h"
 
 #include "EGLConfig.h"
 namespace ngl
@@ -38,18 +37,6 @@ class EGLWindow
 		EGLWindow(EGLconfig *_config=0);
 		/// @brief dtor
 		~EGLWindow();
-		/// @brief the has been modified from the GL2 triangle
-		/// demo
-		/// @param[out] _x the x position of the mouse
-		/// @param[out] _y the y position of the mouse
-		/// @returns the button state (need to check this!)
-		void getMouse(
-									int &_x,
-									int &_y
-								);
-		inline bool getLeft(){return m_mouse->getLeft();}
-		inline bool getRight(){return m_mouse->getRight();}
-		inline bool getMiddle(){return m_mouse->getMiddle();}
 
 		/// @brief must be implemented by the user this will
 		/// be called after the ctor once we have a valid GL context
@@ -136,8 +123,6 @@ class EGLWindow
 	 	bool m_activeSurface;
 	 	/// @brief flag to indicate if we upscale to full screen resolution
 	 	bool m_upscale;
-	 	/// @brief file pointer to the mouse, opened by the ctor closed by the dtor
-		Mouse *m_mouse;
 
 
 };

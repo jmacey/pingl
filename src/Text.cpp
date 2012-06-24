@@ -98,7 +98,6 @@ Text::Text(
   // as some of the fonts will be the same width, to save VAO space we will only create
   // a vao if we don't have one of the set width. To do this we use the has below
   std::map <int,VertexArrayObject *> widthVAO;
-
   for(char c=startChar; c<=endChar; ++c)
   {
     FontChar fc;
@@ -123,28 +122,33 @@ Text::Text(
 	//Use our helper function to get the widths of
 	//the bitmap data that we will need in order to create
 	//our texture.
-		int width =bitmap.width;
+
+		float fontHeight=face->glyph->metrics.height;
+		fontHeight=fontHeight/64.0;
+		int width =(face->glyph->metrics.width)/64;
 		int widthPow2=nearestPowerOfTwo(width);
 		int height = bitmap.rows;
 		int heightPow2=nearestPowerOfTwo(height);
 
 
+
+
+	std::cerr<<"font height "<<fontHeight<<"\n";
+
 		//Allocate memory for the texture data.
 		GLubyte* data = new GLubyte[ 4 * widthPow2 * heightPow2];
-		int index=0;
-		int d=0;
+		unsigned int index=0;
 		for(int j=0; j <heightPow2;j++)
 		{
 			for(int i=0; i < widthPow2; i++)
 			{
-				data[index++]=255; //r
-				data[index++]=255; //g
-				data[index++]=255; //b
 
+				data[index++]=0;
+				data[index++]=0;
+				data[index++]=0;
 				data[index++]=
 				(i>=bitmap.width || j>=bitmap.rows) ?
 				0 : bitmap.buffer[i + bitmap.width*j];
-
 			}
 		}
 
@@ -166,8 +170,7 @@ Text::Text(
     // this will scale the height so we only get coverage of the glyph as above
     ngl::Real t1=height*-1.0/heightPow2;
     // we need to store the font width for later drawing
-    fc.width=widthPow2;
-    //fc.height=heightPow2;
+    fc.width=width;
 
 
      // now we create the OpenGL texture ID and bind to make it active
@@ -175,13 +178,15 @@ Text::Text(
     glBindTexture(GL_TEXTURE_2D, fc.textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
-       0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, widthPow2, heightPow2,
+		  0, GL_RGBA, GL_UNSIGNED_BYTE, data );
+		// now we have bound the data we can clear it
+		delete [] data;
+
 
     // see if we have a Billboard of this width already
     if (widthVAO.find( width ) == widthVAO.end())
-
-    {
+	  {
     	std::cerr<<"allocating vao for "<<c<<"\n";
         // this structure is used by the VAO to store the data to be uploaded
         // for drawing the quad
@@ -200,33 +205,35 @@ Text::Text(
         d[0].x=0;
         d[0].y=0;
         d[0].u=s0;
-        d[0].v=t0;
+        d[0].v=t1;
 
         d[1].x=fc.width;
         d[1].y=0;
         d[1].u=s1;
-        d[1].v=t0;
+        d[1].v=t1;
 
         d[2].x=0;
-        d[2].y=height;
+        d[2].y=fontHeight;
         d[2].u=s0;
-        d[2].v=t1;
+        d[2].v=t0;
         // load values for triangle two
         d[3].x=0;
-        d[3].y=0+height;
+        d[3].y=0+fontHeight;
         d[3].u=s0;
-        d[3].v=t1;
+        d[3].v=t0;
 
 
         d[4].x=fc.width;
         d[4].y=0;
         d[4].u=s1;
-        d[4].v=t0;
+        d[4].v=t1;
+
 
         d[5].x=fc.width;
-        d[5].y=height;
+        d[5].y=fontHeight;
         d[5].u=s1;
-        d[5].v=t1;
+        d[5].v=t0;
+
 
         // now we create a VAO to store the data
         ngl::VertexArrayObject *vao=ngl::VertexArrayObject::createVOA(GL_TRIANGLES);
