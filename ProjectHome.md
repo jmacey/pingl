@@ -1,0 +1,1 @@
+This is a full OpenGL ES graphics library that can be used with the Raspberry pi to write your own 3D graphics programs. More details can be found here  http://nccastaff.bournemouth.ac.uk/jmacey/GraphicsLib/piNGL/index.html.
